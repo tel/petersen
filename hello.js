@@ -1,5 +1,5 @@
 (function() {
-  var cprod, disj, divides, es, flip, force, h, link, mkEdges, mod2, node, pairs, svg, symmetrize, vs, w;
+  var cprod, disj, divides, es, force, h, link, mkEdges, mod2, node, pairs, svg, vs, w;
 
   console.log("Let's get started!");
 
@@ -45,19 +45,7 @@
   };
 
   mod2 = function(a, b) {
-    return a % b === 2;
-  };
-
-  symmetrize = function(f) {
-    return function(a, b) {
-      return (f(a, b)) || (f(b, a));
-    };
-  };
-
-  flip = function(f) {
-    return function(b, a) {
-      return f(a, b);
-    };
+    return b % a === 2;
   };
 
   mkEdges = function(vs, connp) {
@@ -80,9 +68,7 @@
     return [x];
   });
 
-  console.log(vs);
-
-  es = mkEdges(vs, flip(mod2));
+  es = mkEdges(vs, mod2);
 
   w = 800;
 
@@ -94,7 +80,7 @@
 
   link = svg.selectAll("line.link").data(es).enter().append("line").attr("class", "link").style("stroke-width", 3).style("stroke", "red");
 
-  node = svg.selectAll("text.node").data(vs).enter().append("svg:text").attr("class", "node").attr("text-anchor", "middle").attr("r", 5).text(function(d) {
+  node = svg.selectAll("text.node").data(vs).enter().append("text").attr("class", "node").attr("text-anchor", "middle").text(function(d) {
     return d[0];
   }).call(force.drag);
 

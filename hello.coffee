@@ -6,9 +6,7 @@ pairs = (n) -> ([a,b] for [a,b] in cprod _.range(n) when a < b)
 disj  = (a,b) -> _.union(a,b).length == 4
 
 divides = (a,b) -> (Math.floor a/b) is (a/b)
-mod2 = (a,b) -> a%b is 2
-symmetrize = (f) -> (a,b) -> (f a, b) or (f b, a)
-flip = (f) -> (b,a) -> f a, b
+mod2 = (a,b) -> b%a is 2
 
 # Graph making functions
 mkEdges = (vs, connp) ->
@@ -19,8 +17,7 @@ mkEdges = (vs, connp) ->
 
 # Describe the vertices and edges of the Petersen graph
 vs = _.map _.range(3, 30), (x) -> [x]
-console.log vs
-es = mkEdges vs, flip mod2
+es = mkEdges vs, mod2
 
 # Start describing the d3 force layout
 w = 800
@@ -47,10 +44,10 @@ link = svg.selectAll("line.link")
 
 node = svg.selectAll("text.node")
         .data(vs)
-        .enter().append("svg:text")
+        .enter()
+        .append("text")
         .attr("class", "node")
         .attr("text-anchor", "middle")
-        .attr("r", 5)
         .text((d) -> d[0])
         .call(force.drag)
 
